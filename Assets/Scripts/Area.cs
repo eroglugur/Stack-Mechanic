@@ -13,7 +13,7 @@ public class Area : MonoBehaviour
     {
         collectibles.Add(obj);
         obj.SetParent(gameObject.transform);
-        obj.DOLocalMove(new Vector3(0,collectibles.IndexOf(obj) / 5f + 2f,0), 1f);
+        obj.DOLocalMove(new Vector3(0,collectibles.IndexOf(obj) / 5f,0), 1f);
     }
 
     public void Transfer()
