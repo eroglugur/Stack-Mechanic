@@ -42,6 +42,7 @@ public class Player : Singleton<Player>
     private void OnTriggerExit(Collider other)
     {
         isInTrigger = false;
+        StopAllCoroutines();
     }
 
     public void CollectObj(Transform obj)
