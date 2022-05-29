@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +9,26 @@ public class Player : Singleton<Player>
     public List<Transform> collectibles;
 
     [SerializeField] private float speed;
-    
+
     private bool isInTrigger = false;
-    
-    void Update()
+
+    private void Start()
     {
-        float horizontalAxis = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
-        float verticalAxis = Input.GetAxis("Vertical") * Time.deltaTime * speed;
+        StartCoroutine("MoveCoroutine");
+    }
 
-        Vector3 moveDirection = new Vector3(horizontalAxis, 0, verticalAxis);
+    private IEnumerator MoveCoroutine()
+    {
+        while (true)
+        {
+            float horizontalAxis = Input.GetAxis("Horizontal") * Time.deltaTime * speed;
+            float verticalAxis = Input.GetAxis("Vertical") * Time.deltaTime * speed;
 
-        transform.position += moveDirection;
+            Vector3 moveDirection = new Vector3(horizontalAxis, 0, verticalAxis);
+
+            transform.position += moveDirection;
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -42,7 +50,7 @@ public class Player : Singleton<Player>
     private void OnTriggerExit(Collider other)
     {
         isInTrigger = false;
-        StopAllCoroutines();
+        StopCoroutine("CollectObj");
     }
 
     public void CollectObj(Transform obj)
@@ -61,7 +69,7 @@ public class Player : Singleton<Player>
 
             obj.SetParent(null);
             collectibles.Remove(obj);
-            
+
             area.GetComponent<Area>().Collect(obj);
             yield return new WaitForSeconds(0.15f);
         }

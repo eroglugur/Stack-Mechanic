@@ -37,6 +37,6 @@ public class Area : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        StopAllCoroutines();
+        StopCoroutine("RemoveCoroutine");
     }
 }
